@@ -1,0 +1,2 @@
+include ':app', ':libtd'
+project(':libtd').projectDir = new File('dependencies/libtd')

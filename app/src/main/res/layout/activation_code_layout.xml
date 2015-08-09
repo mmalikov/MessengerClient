@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/explainText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <android.support.design.widget.TextInputLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/activationCode"
+            android:layout_width="100sp"
+            android:layout_height="wrap_content"
+            android:hint="Code"
+            android:textSize="@dimen/textSize" />
+
+    </android.support.design.widget.TextInputLayout>
+
+    <TextView
+        android:id="@+id/wrongCode"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wrong code"
+        android:textColor="@color/wrongInput"
+        android:visibility="invisible"/>
+
+</LinearLayout>
