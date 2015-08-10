@@ -11,15 +11,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Created by mmalykov on 8/9/15.
  */
 public class ActivationCodeActivity extends ActionBarActivity {
 
-    ActionBar actionBar;
-    TextView explainText;
-    EditText activationCode;
+    private ActionBar actionBar;
+    private TextView explainText;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,39 +27,32 @@ public class ActivationCodeActivity extends ActionBarActivity {
 
         actionBar = getSupportActionBar();
         explainText = (TextView) findViewById(R.id.explainText);
-        activationCode = (EditText) findViewById(R.id.activationCode);
 
-        actionBar.setTitle("Activation code");
-        actionBar.setBackgroundDrawable(new ColorDrawable(Color.parseColor("#5b95c2")));
+        actionBar.setTitle(getResources().getString(R.string.activation_code_action_bar_title));
+        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
 
         Intent intent = getIntent();
 
-        String phoneNumber = intent.getStringExtra("PHONE");
-        String countryCode = intent.getStringExtra("CODE");
+        String phoneNumber = intent.getStringExtra(LoginPhoneActivity.ATTRIBUTE_PHONE_NUMBER);
+        String phoneCode = intent.getStringExtra(LoginPhoneActivity.ATTRIBUTE_PHONE_CODE);
 
-        String text = getApplicationContext().getString(R.string.activation_code_explain) + " " + countryCode + " " + phoneNumber;
-
+        String text = getApplicationContext().getString(R.string.activation_code_explain) + " " + phoneCode + " " + phoneNumber;
         explainText.setText(text);
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.menu_login_phone, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
-        /*if (id == R.id.action_settings) {
-            return true;
-        }*/
+        if (id == R.id.action_check) {
+            Toast.makeText(getApplicationContext(), "CHECK Btn PRESSED", Toast.LENGTH_SHORT).show();
+        }
 
         return super.onOptionsItemSelected(item);
     }

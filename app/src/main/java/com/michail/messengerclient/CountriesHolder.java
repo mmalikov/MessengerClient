@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.TreeMap;
 
 /**
  * Created by mmalykov on 8/8/15.
@@ -22,114 +23,58 @@ public class CountriesHolder {
     public static final String ATTRIBUTE_NAME = "NAME";
     public static final String ATTRIBUTE_PHONE_CODE = "PHONE_CODE";
     public static final String ATTRIBUTE_COUNTRY_CODE = "COUNTRY_CODE";
+    public static final String PLUS = "+";
 
-    public ArrayList<HashMap<String, String>> name_phoneCode_list;
-    public ArrayList<HashMap<String, String>> name_countryCode_list;
+    //Get name by phone code
+    private HashMap<String, String> phoneCodeNameList;
+
+    //Get phone code by name
+    //Get country code by name
+    private TreeMap<String, CountryCodes> nameCodesList;
 
     private CountriesHolder(Context context) {
-        try {
-            InputStream stream = context.getAssets().open("countries.txt");
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-
-            name_phoneCode_list = new ArrayList<>();
-
-            while ((line = reader.readLine()) != null) {
-                String[] args = line.split(";");
-
-                HashMap<String, String> mHashMap = new HashMap<>();
-                mHashMap.put(ATTRIBUTE_NAME, args[2]);
-                mHashMap.put(ATTRIBUTE_PHONE_CODE, "+" + args[0]);
-
-                name_phoneCode_list.add(mHashMap);
-            }
-
-            reader.close();
-            stream.close();
-        } catch (Exception e) {
-            Log.e("Message Client", "FILE NOT READ");
-        }
+        nameCodesList = new TreeMap<>();
+        phoneCodeNameList = new HashMap<>();
 
         try {
             InputStream stream = context.getAssets().open("countries.txt");
-
             BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
+
             String line;
 
-             name_countryCode_list = new ArrayList<>();
-
             while ((line = reader.readLine()) != null) {
-                String[] args = line.split(";");
+                String[] countryInfo = line.split(";");
+                String phoneCode = PLUS + countryInfo[0];
 
-                HashMap<String, String> mHashMap = new HashMap<>();
-                mHashMap.put(ATTRIBUTE_NAME, args[2]);
-                mHashMap.put(ATTRIBUTE_COUNTRY_CODE, "+" + args[1]);
+                CountryCodes codes = new CountryCodes(phoneCode, countryInfo[1]);
+                nameCodesList.put(countryInfo[2], codes);
 
-                name_countryCode_list.add(mHashMap);
+                phoneCodeNameList.put(phoneCode, countryInfo[2]);
             }
-
             reader.close();
             stream.close();
         } catch (Exception e) {
-            Log.e("Message Client", "FILE NOT READ");
+            Log.e("MessageClient", "FILE NOT READ");
         }
 
-        Collections.sort(name_phoneCode_list, new Comparator<HashMap<String, String>>() {
-            @Override
-            public int compare(HashMap<String, String> lhs, HashMap<String, String> rhs) {
-                return lhs.get(ATTRIBUTE_NAME).compareTo(rhs.get(ATTRIBUTE_NAME));
-            }
-        });
-
-        Collections.sort(name_countryCode_list, new Comparator<HashMap<String, String>>() {
-            @Override
-            public int compare(HashMap<String, String> lhs, HashMap<String, String> rhs) {
-                return lhs.get(ATTRIBUTE_NAME).compareTo(rhs.get(ATTRIBUTE_NAME));
-            }
-        });
     }
 
     public static synchronized CountriesHolder getInstance(Context context) {
-        if(instance == null){
+        if (instance == null) {
             instance = new CountriesHolder(context);
         }
-
         return instance;
     }
 
-    public String getName(String code) {
-        for (HashMap<String, String> country : name_phoneCode_list) {
-            if (country.containsValue(code)) {
-                for (String key : country.keySet()) {
-                    if (country.get(key).equals(code)) {
-                        return country.get(ATTRIBUTE_NAME);
-                    }
-                }
-            }
-        }
-
-        return "Wrong code of country";
+    public String getName(String phoneCode) {
+        return phoneCodeNameList.get(phoneCode);
     }
 
-    public String getCode(String name) {
-        for (HashMap<String, String> country : name_phoneCode_list) {
-            if (country.containsKey(name)) {
-                return country.get(ATTRIBUTE_PHONE_CODE);
-            }
-        }
-
-        return "Wrong code of country";
+    public String getCountryCode(String name) {
+        return nameCodesList.get(name).getCountryCode();
     }
 
-    public String getCountryCode(String name){
-        for (HashMap<String,String> country: name_countryCode_list){
-            if(country.containsValue(name)){
-                return country.get(ATTRIBUTE_COUNTRY_CODE);
-            }
-        }
-
-        return "ERROR";
+    public TreeMap<String, CountryCodes> getNameCodesList() {
+        return nameCodesList;
     }
-
 }

@@ -9,10 +9,11 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textSize="22sp"
-        android:layout_alignParentLeft="true"/>
+        android:layout_alignParentLeft="true"
+        android:textColor="@color/contact_list"/>
 
     <TextView
-        android:id="@+id/countryCode"
+        android:id="@+id/phoneCode"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:textSize="22sp"

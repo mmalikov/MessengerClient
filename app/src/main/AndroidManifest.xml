@@ -20,15 +20,12 @@
         <activity
             android:name=".CountryListActivity"
             android:label="CountryList"
-            android:parentActivityName=".LoginPhoneActivity">
-        </activity>
+            android:parentActivityName=".LoginPhoneActivity"/>
 
         <activity
             android:name=".ActivationCodeActivity"
             android:label="ActivationCode"
-            android:parentActivityName=".LoginPhoneActivity">
-        </activity>
+            android:parentActivityName=".LoginPhoneActivity"/>
 
     </application>
-
 </manifest>
