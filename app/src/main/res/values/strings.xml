@@ -8,4 +8,6 @@
     <string name="choose_country">Choose a country</string>
     <string name="valid_number">Enter valid phone number</string>
     <string name="activation_code_action_bar_title">Activation code</string>
+    <string name="wrong_code">Wrong phone code</string>
+    <string name="wrong_fill_fields">Fill all fields correctly</string>
 </resources>

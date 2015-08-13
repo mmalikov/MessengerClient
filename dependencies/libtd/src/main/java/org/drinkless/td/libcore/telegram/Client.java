@@ -48,8 +48,7 @@ public class Client implements Runnable {
      *
      * @param function Object representing request.
      * @param handler  Result handler with onResult method which will be called with result
-     *                 of query or with TdApi.error as parameter.
-     * @throws NullPointerException if function or handler is null.
+     *                 of query or with TdApi.error ad parameter.
      */
     public void send(TdApi.TLFunction function, ResultHandler handler) {
         if (handler == null || function == null) {
@@ -66,29 +65,12 @@ public class Client implements Runnable {
     }
 
     /**
-     * Replaces handler for incoming updates from TDLib.
-     *
-     * @param handler Handler with onResult method which will be called for every incoming
-     *                update from TDLib.
-     */
-    public void setUpdatesHandler(ResultHandler handler) {
-        try {
-            queryQueue.put(new Query(null, handler));
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            return;
-        }
-        wakeUp();
-    }
-
-    /**
      * Function for benchmarking number of queries per second which can handle TDLib, ignore it.
      *
      * @param function Object representing request.
      * @param handler  Result handler with onResult method which will be called with result
      *                 of query or with TdApi.error ad parameter.
      * @param n        Number of times to repeat request.
-     * @throws NullPointerException if dir is null.
      */
     public void bench(TdApi.TLFunction function, ResultHandler handler, int n) {
         if (handler == null || function == null) {
@@ -127,15 +109,9 @@ public class Client implements Runnable {
      *
      * @param updatesHandler Handler for incoming updates.
      * @param dir            Directory for persistent database.
-     * @param filesDir       Directory for files.
-     * @throws NullPointerException if dir is null.
      */
-    static Client create(ResultHandler updatesHandler, String dir, String filesDir) {
-        if (dir == null || filesDir == null) {
-            throw new NullPointerException();
-        }
-
-        return new Client(updatesHandler, dir, filesDir);
+    static Client create(ResultHandler updatesHandler, String dir) {
+        return new Client(updatesHandler, dir);
     }
 
     /**
@@ -167,9 +143,9 @@ public class Client implements Runnable {
         }
     }
 
-    private Client(ResultHandler updatesHandler, String dir, String filesDir) {
+    private Client(ResultHandler updatesHandler, String dir) {
         long nativeClientId = NativeClient.createClient();
-        NativeClient.clientInit(nativeClientId, dir, filesDir);
+        NativeClient.clientInit(nativeClientId, dir);
 
         stopFlag = false;
         this.nativeClientId = nativeClientId;

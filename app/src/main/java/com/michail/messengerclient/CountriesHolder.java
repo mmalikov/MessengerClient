@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.TreeMap;
 
 /**
@@ -46,10 +47,13 @@ public class CountriesHolder {
                 String[] countryInfo = line.split(";");
                 String phoneCode = PLUS + countryInfo[0];
 
-                CountryCodes codes = new CountryCodes(phoneCode, countryInfo[1]);
-                nameCodesList.put(countryInfo[2], codes);
+                Locale locale = new Locale(Locale.getDefault().getDisplayLanguage(),countryInfo[1]);
+                String countryName = locale.getDisplayCountry();
 
-                phoneCodeNameList.put(phoneCode, countryInfo[2]);
+                CountryCodes codes = new CountryCodes(phoneCode, countryInfo[1]);
+                nameCodesList.put(countryName, codes);
+
+                phoneCodeNameList.put(phoneCode, countryName);
             }
             reader.close();
             stream.close();
@@ -66,8 +70,11 @@ public class CountriesHolder {
         return instance;
     }
 
-    public String getName(String phoneCode) {
-        return phoneCodeNameList.get(phoneCode);
+    public String getName(Context context, String phoneCode) {
+        String result  = phoneCodeNameList.get(phoneCode);
+        if(result == null) result = context.getResources().getString(R.string.wrong_code);
+
+        return result;
     }
 
     public String getCountryCode(String name) {

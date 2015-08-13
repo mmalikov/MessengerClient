@@ -8,7 +8,6 @@ import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 /**
@@ -16,26 +15,25 @@ import android.widget.TextView;
  */
 public class CountryListActivity extends ActionBarActivity {
 
-    private ActionBar actionBar;
-    private ListView listView;
+    private ActionBar mActionBar;
+    private ListView mListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.country_list_layout);
 
-        actionBar = getSupportActionBar();
-        listView = (ListView) findViewById(R.id.coutriesListView);
+        mActionBar = getSupportActionBar();
+        mListView = (ListView) findViewById(R.id.coutriesListView);
 
-        actionBar.setTitle(getResources().getString(R.string.choose_country));
-        actionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
+        mActionBar.setTitle(getResources().getString(R.string.choose_country));
+        mActionBar.setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.action_bar)));
 
-        /* SET CUSTOM ADAPTER FOR LIST VIEW*/
         CountriesHolder countries = CountriesHolder.getInstance(getApplicationContext());
         CountryListAdapter mAdapter = new CountryListAdapter(getApplicationContext(), countries.getNameCodesList());
-        listView.setAdapter(mAdapter);
+        mListView.setAdapter(mAdapter);
 
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String countryName = (String) ((TextView) view.findViewById(R.id.countryName)).getText();
